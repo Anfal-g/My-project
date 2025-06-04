@@ -1,0 +1,14 @@
+
+*.exe
+*.out
+*.o
+*.a
+*.so
+*.dll
+*_test.go
+.DS_Store
+Thumbs.db
+*.tar.gz
+*.zip
+go/
+go1.*

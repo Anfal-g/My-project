@@ -1,0 +1,15 @@
+{
+  "name": "basicnetwork-2.0-master",
+  "version": "1.0.0",
+  "main": "test.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "fabric-network": "^2.2.20"
+  }
+}

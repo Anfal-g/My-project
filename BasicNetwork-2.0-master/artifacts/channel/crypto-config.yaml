@@ -1,0 +1,74 @@
+# 3 Organizations: Residents, Manager, EntrySystem
+# Number of nodes: Residents (2) - Manager (1) - EntrySystem (1)
+# Add a user per organization to manage identity and permissions
+OrdererOrgs:
+  # ---------------------------------------------------------------------------
+  # Orderer Organization
+  # ---------------------------------------------------------------------------
+  # The ordering organization is not present by default, but defining it as in the file is enough to make it work properly.
+  - Name: Orderer
+    Domain: example.com
+    EnableNodeOUs: true
+
+    Specs:
+      - Hostname: orderer
+        SANS:
+          - "localhost"
+          - "127.0.0.1"
+      - Hostname: orderer2
+        SANS:
+          - "localhost"
+          - "127.0.0.1"
+      - Hostname: orderer3
+        SANS:
+          - "localhost"
+          - "127.0.0.1"
+
+# ---------------------------------------------------------------------------
+# Peer Organizations
+# ---------------------------------------------------------------------------
+PeerOrgs:
+  # ---------------------------------------------------------------------------
+  # Org1 - Residents
+  # ---------------------------------------------------------------------------
+  - Name: Residents
+    Domain: residents.example.com
+    EnableNodeOUs: true
+
+    Template:
+      Count: 2
+      SANS:
+        - "localhost"
+
+    Users:
+      Count: 1
+
+  # ---------------------------------------------------------------------------
+  # Org2 - Building Manager
+  # ---------------------------------------------------------------------------
+  - Name: Manager
+    Domain: manager.example.com
+    EnableNodeOUs: true
+
+    Template:
+      Count: 1
+      SANS:
+        - "localhost"
+
+    Users:
+      Count: 1
+
+  # ---------------------------------------------------------------------------
+  # Org3 - Entry System
+  # ---------------------------------------------------------------------------
+  - Name: EntrySystem
+    Domain: entrysystem.example.com
+    EnableNodeOUs: true
+
+    Template:
+      Count: 1
+      SANS:
+        - "localhost"
+
+    Users:
+      Count: 1

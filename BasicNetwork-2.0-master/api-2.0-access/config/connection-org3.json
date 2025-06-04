@@ -1,0 +1,53 @@
+{
+    "name": "first-network-Org3",
+    "version": "1.0.0",
+    "client": {
+        "organization": "Org3",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                }
+            }
+        }
+    },
+    "organizations": {
+        "Org3": {
+            "mspid": "EntrysystemMSP",
+            "peers": [
+                "peer0.entrysystem.example.com",
+                "peer1.entrysystem.example.com"
+            ],
+            "certificateAuthorities": [
+                "ca.entrysystem.example.com"
+            ]
+        }
+    },
+    "peers": {
+        "peer0.entrysystem.example.com": {
+            "url": "grpcs://localhost:9051",
+            "tlsCACerts": {
+              "path": "/mnt/c/Users/MICRO/Desktop/My-Project/BasicNetwork-2.0-master/artifacts/channel/crypto-config/peerOrganizations/entrysystem.example.com/peers/peer0.entrysystem.example.com/tls/ca.crt"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.entrysystem.example.com",
+                "hostnameOverride": "peer0.entrysystem.example.com"
+            }
+        }
+
+
+	
+    },
+    "certificateAuthorities": {
+        "ca.entrysystem.example.com": {
+            "url": "https://localhost:9054",
+            "caName": "ca.entrysystem.example.com",
+            "tlsCACerts": {
+              "path": "/mnt/c/Users/MICRO/Desktop/My-Project/BasicNetwork-2.0-master/artifacts/channel/crypto-config/peerOrganizations/entrysystem.example.com/ca/ca.entrysystem.example.com-cert.pem"
+            },
+            "httpOptions": {
+                "verify": false
+            }
+        }
+    }
+}

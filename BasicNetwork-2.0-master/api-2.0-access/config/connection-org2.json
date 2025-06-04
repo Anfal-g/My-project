@@ -1,0 +1,53 @@
+{
+    "name": "first-network-org2",
+    "version": "1.0.0",
+    "client": {
+        "organization": "Org2",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                }
+            }
+        }
+    },
+    "organizations": {
+        "Org2": {
+            "mspid": "ManagerMSP",
+            "peers": [
+                "peer0.manager.example.com",
+                "peer1.manager.example.com"
+            ],
+            "certificateAuthorities": [
+                "ca.manager.example.com"
+            ]
+        }
+    },
+    "peers": {
+        "peer0.manager.example.com": {
+            "url": "grpcs://localhost:8151",
+            "tlsCACerts": {
+              "path": "/mnt/c/Users/MICRO/Desktop/My-Project/BasicNetwork-2.0-master/artifacts/channel/crypto-config/peerOrganizations/manager.example.com/peers/peer0.manager.example.com/tls/ca.crt"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.manager.example.com",
+                "hostnameOverride": "peer0.manager.example.com"
+            }
+        }
+
+
+	
+    },
+    "certificateAuthorities": {
+        "ca.manager.example.com": {
+            "url": "https://localhost:8054",
+            "caName": "ca.manager.example.com",
+            "tlsCACerts": {
+              "path": "/mnt/c/Users/MICRO/Desktop/My-Project/BasicNetwork-2.0-master/artifacts/channel/crypto-config/peerOrganizations/manager.example.com/ca/ca.manager.example.com-cert.pem"
+            },
+            "httpOptions": {
+                "verify": false
+            }
+        }
+    }
+}

@@ -1,0 +1,71 @@
+{
+    "name": "first-network-org1",
+    "version": "1.0.0",
+    "client": {
+        "organization": "Org1",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                }
+            }
+        }
+    },
+    "organizations": {
+        "Org1": {
+            "mspid": "ResidentsMSP",
+            "peers": [
+                "peer0.residents.example.com",
+                "peer1.residents.example.com"
+            ],
+            "certificateAuthorities": [
+                "ca.residents.example.com"
+            ]
+        }
+    },
+    "channels": {
+  "residentschannel": {
+    "peers": {
+      "peer0.residents.example.com": {},
+      "peer1.residents.example.com": {}
+    }
+  }
+},
+
+    "peers": {
+        "peer0.residents.example.com": {
+            "url": "grpcs://localhost:7051",
+            "tlsCACerts": {
+              "path": "C:/Users/MICRO/Desktop/My-Project/BasicNetwork-2.0-master/artifacts/channel/crypto-config/peerOrganizations/residents.example.com/peers/peer0.residents.example.com/tls/ca.crt"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.residents.example.com",
+                "hostnameOverride": "peer0.residents.example.com"
+            }
+        },
+	"peer1.residents.example.com": {
+            "url": "grpcs://localhost:8051",
+            "tlsCACerts": {
+              "path": "C:/Users/MICRO/Desktop/My-Project/BasicNetwork-2.0-master/artifacts/channel/crypto-config/peerOrganizations/residents.example.com/peers/peer1.residents.example.com/tls/ca.crt"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer1.residents.example.com",
+                "hostnameOverride": "peer1.residents.example.com"
+            }
+        }
+
+	
+    },
+    "certificateAuthorities": {
+        "ca.residents.example.com": {
+            "url": "https://localhost:7054",
+            "caName": "ca.residents.example.com",
+            "tlsCACerts": {
+              "path": "C:/Users/MICRO/Desktop/My-Project/BasicNetwork-2.0-master/artifacts/channel/crypto-config/peerOrganizations/residents.example.com/ca/ca.residents.example.com-cert.pem"
+            },
+            "httpOptions": {
+                "verify": false
+            }
+        }
+    }
+}

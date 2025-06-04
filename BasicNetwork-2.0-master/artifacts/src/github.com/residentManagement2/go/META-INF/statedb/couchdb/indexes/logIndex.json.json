@@ -1,0 +1,8 @@
+{
+  "index": {
+    "fields": ["residentId", "timestamp"]
+  },
+  "ddoc": "log-index",
+  "name": "residentId-timestamp-index",
+  "type": "json"
+}

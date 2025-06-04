@@ -1,0 +1,276 @@
+################################################################################
+#
+#   Section: Organizations
+#
+#   - This section defines the different organizational identities which will
+#   be referenced later in the configuration.
+#
+################################################################################
+
+Organizations:
+
+    - &Residents
+        Name: ResidentsMSP
+        ID: ResidentsMSP
+        MSPDir: crypto-config/peerOrganizations/residents.example.com/msp
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('ResidentsMSP.admin', 'ResidentsMSP.peer', 'ResidentsMSP.client')"
+            Writers:
+                Type: Signature
+                Rule: "OR('ResidentsMSP.admin', 'ResidentsMSP.client')"
+            Admins:
+                Type: Signature
+                Rule: "OR('ResidentsMSP.admin')"
+        AnchorPeers:
+            - Host: peer0.residents.example.com
+              Port: 7051
+
+    - &Manager
+        Name: ManagerMSP
+        ID: ManagerMSP
+        MSPDir: crypto-config/peerOrganizations/manager.example.com/msp
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('ManagerMSP.admin', 'ManagerMSP.peer', 'ManagerMSP.client')"
+            Writers:
+                Type: Signature
+                Rule: "OR('ManagerMSP.admin', 'ManagerMSP.client')"
+            Admins:
+                Type: Signature
+                Rule: "OR('ManagerMSP.admin')"
+        AnchorPeers:
+            - Host: peer0.manager.example.com
+              Port: 8151
+
+    - &EntrySystem
+        Name: EntrySystemMSP
+        ID: EntrySystemMSP
+        MSPDir: crypto-config/peerOrganizations/entrysystem.example.com/msp
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('EntrySystemMSP.admin', 'EntrySystemMSP.peer', 'EntrySystemMSP.client')"
+            Writers:
+                Type: Signature
+                Rule: "OR('EntrySystemMSP.admin', 'EntrySystemMSP.client')"
+            Admins:
+                Type: Signature
+                Rule: "OR('EntrySystemMSP.admin')"
+        AnchorPeers:
+            - Host: peer0.entrysystem.example.com
+              Port: 9051
+
+    - &OrdererOrg
+        Name: OrdererMSP
+        ID: OrdererMSP
+        MSPDir: crypto-config/ordererOrganizations/example.com/msp
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('OrdererMSP.member')"
+            Writers:
+                Type: Signature
+                Rule: "OR('OrdererMSP.member')"
+            Admins:
+                Type: Signature
+                Rule: "OR('OrdererMSP.admin')"
+
+################################################################################
+#
+#   Section: Capabilities
+#
+################################################################################
+
+Capabilities:
+    Channel: &ChannelCapabilities
+        V2_0: true
+    Orderer: &OrdererCapabilities
+        V2_0: true
+    Application: &ApplicationCapabilities
+        V2_0: true
+
+################################################################################
+#
+#   Section: Application
+#
+#   - This section defines the values to encode into a config transaction or
+#   genesis block for application related parameters
+#
+################################################################################
+
+Application: &ApplicationDefaults
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+    Organizations:
+    Capabilities: *ApplicationCapabilities
+
+################################################################################
+#
+#   Section: Orderer
+#   - This section defines the values to encode into a config transaction or
+#   genesis block for orderer related parameters
+#
+################################################################################
+
+Orderer: &OrdererDefaults
+    OrdererType: etcdraft
+    Addresses:
+        - orderer.example.com:7050
+    BatchTimeout: 2s
+    BatchSize:
+        MaxMessageCount: 10
+        AbsoluteMaxBytes: 99 MB
+        PreferredMaxBytes: 512 KB
+    EtcdRaft:
+        Consenters:
+            - Host: orderer.example.com
+              Port: 7050
+              ClientTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
+              ServerTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
+    Organizations:
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "ANY Admins"
+        BlockValidation:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+
+################################################################################
+#
+#   Section: Channel
+#   This section defines the values to encode into a config transaction or
+#   genesis block for channel related parameters.
+#
+################################################################################
+
+Channel: &ChannelDefaults
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+    Capabilities: *ChannelCapabilities
+
+################################################################################
+#
+#   Section: Profiles
+#   - Different configuration profiles may be encoded here to be specified
+#   as parameters to the configtxgen tool
+#
+################################################################################
+
+Profiles:
+
+    ResidentsChannel:
+        Consortium: SmartBuildingConsortium
+        <<: *ChannelDefaults
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Residents
+                - *Manager
+                - *EntrySystem
+            Capabilities: *ApplicationCapabilities
+            Policies:
+                Readers:
+                    Type: Signature
+                    Rule: "OR('ResidentsMSP.member', 'ManagerMSP.member', 'EntrySystemMSP.member')"
+                Writers:
+                    Type: Signature
+                    Rule: "OR('ResidentsMSP.member', 'ManagerMSP.member', 'EntrySystemMSP.member')"
+                Admins:
+                    Type: Signature
+                    Rule: "OR('ResidentsMSP.admin', 'ManagerMSP.admin', 'EntrySystemMSP.admin')"
+
+    AccessControlChannel:   
+        Consortium: SmartBuildingConsortium
+        <<: *ChannelDefaults
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:    
+                - *Residents
+                - *Manager
+                - *EntrySystem
+            Capabilities: *ApplicationCapabilities
+            Policies:
+                Readers:
+                    Type: Signature
+                    Rule: "OR('ResidentsMSP.member', 'ManagerMSP.member', 'EntrySystemMSP.member')"
+                Writers:
+                    Type: Signature
+                    Rule: "OR('ResidentsMSP.member', 'ManagerMSP.member', 'EntrySystemMSP.member')"
+                Admins:
+                    Type: Signature
+                    Rule: "OR('ResidentsMSP.admin', 'ManagerMSP.admin', 'EntrySystemMSP.admin')"
+
+    OrdererGenesis:
+        <<: *ChannelDefaults
+        Capabilities: *ChannelCapabilities
+        Orderer:
+            <<: *OrdererDefaults
+            OrdererType: etcdraft
+            EtcdRaft:
+                Consenters:
+                    - Host: orderer.example.com
+                      Port: 7050
+                      ClientTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
+                      ServerTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
+                    - Host: orderer2.example.com
+                      Port: 8050
+                      ClientTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/tls/server.crt
+                      ServerTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/tls/server.crt
+                    - Host: orderer3.example.com
+                      Port: 9050
+                      ClientTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer3.example.com/tls/server.crt
+                      ServerTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer3.example.com/tls/server.crt
+            Addresses:
+                - orderer.example.com:7050
+                - orderer2.example.com:8050
+                - orderer3.example.com:9050
+            Organizations:
+                - *OrdererOrg
+            Capabilities: *OrdererCapabilities
+
+        Consortiums:
+            SmartBuildingConsortium:
+                Organizations:
+                    - *Residents
+                    - *Manager
+                    - *EntrySystem
+
+        
+################################################################################
+#
+
+#  Defines three organizations (Residents, Manager, EntrySystem) with their MSPs
+#  Anchor peers are set for each organization for inter-communication
+# Uses Raft consensus for fault-tolerant ordering instead of Kafka
+# Defines two channels:
+
+#     ResidentsChannel (Residents ↔ Manager)
+#     AccessControlChannel (Manager ↔ Entry System)
+#
+################################################################################

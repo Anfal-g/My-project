@@ -1,0 +1,22 @@
+{
+  "name": "api-2.0",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "express": "4.18.2",
+    "express-bearer-token": "^3.0.0",
+    "express-jwt": "^8.5.1",
+    "fabric-ca-client": "^2.2.20",
+    "log4js": "^6.9.1",
+    "path-to-regexp": "1.8.0"
+  }
+}

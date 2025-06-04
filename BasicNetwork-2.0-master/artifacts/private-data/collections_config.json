@@ -1,0 +1,20 @@
+[
+     {
+       "name": "ResidentPrivateCollection",
+       "policy": "OR('ResidentsMSP.member', 'ManagerMSP.member')",
+       "requiredPeerCount": 1,
+       "maxPeerCount": 3,
+       "blockToLive": 1000000,
+       "memberOnlyRead": true,
+       "memberOnlyWrite": true
+     },
+     {
+       "name": "VisitorApprovalCollection",
+       "policy": "OR('ResidentsMSP.member', 'ManagerMSP.member')",
+       "requiredPeerCount": 1,
+       "maxPeerCount": 3,
+       "blockToLive": 1000000,
+       "memberOnlyRead": true,
+       "memberOnlyWrite": true
+     }
+]

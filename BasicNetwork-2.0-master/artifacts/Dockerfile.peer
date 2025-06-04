@@ -1,0 +1,22 @@
+# Start from Hyperledger Fabric peer image
+FROM hyperledger/fabric-peer:2.4
+
+# Switch to root user
+USER root
+
+# Install curl, bash, and Node.js (via Alpine packages)
+RUN apk update && \
+    apk add --no-cache curl bash nodejs npm
+
+# Set npm proxy settings (if needed)
+RUN npm config set proxy http://your-proxy-server:port && \
+    npm config set https-proxy http://your-proxy-server:port && \
+    npm config set fetch-timeout 600000 && \
+    npm config set fetch-retries 5
+
+# Show npm config (debugging)
+RUN npm config list
+
+# Switch back to non-root user (default for peer)
+USER 1000
+

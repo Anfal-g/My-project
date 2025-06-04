@@ -1,0 +1,207 @@
+name: Basic
+x-type: "hlfv1"
+description: "Basic network"
+version: "1.0"
+channels:
+  residentschannel:
+    orderers:
+      - orderer.example.com
+    
+    peers:
+      peer0.residents.example.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+      peer1.residents.example.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+      peer0.manager.example.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+    chaincodes:
+      - residentManagement:v0
+    
+  accesscontrolchannel:
+    orderers:
+      - orderer.example.com
+
+    peers:
+      peer0.residents.example.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+      peer1.residents.example.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+      peer0.manager.example.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+      
+      peer0.entrysystem.example.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+    chaincodes:
+      - accessControl:v0
+
+      
+organizations:
+  Residents:
+    mspid: ResidentsMSP
+
+    peers:
+      - peer0.residents.example.com
+      - peer1.residents.example.com
+
+    certificateAuthorities:
+      - ca.residents.example.com
+# The admin in network-config.yaml is generally a high-level network admin responsible for managing the network's configuration, setting up channels, and other administrative tasks.
+    adminPrivateKey: #The adminPrivateKey and signedCert are the credentials for the admin user, and they are used for administrative operations on the Hyperledger Fabric network.
+      path: ../artifacts/channel/crypto-config/peerOrganizations/residents.example.com/users/Admin@residents.example.com/msp/keystore/priv_sk
+    signedCert:
+      path: ../artifacts/channel/crypto-config/peerOrganizations/residents.example.com/users/Admin@residents.example.com/msp/signcerts/Admin@residents.example.com-cert.pem
+
+  Manager:
+    mspid: ManagerMSP
+
+    peers:
+      - peer0.manager.example.com
+
+    certificateAuthorities:
+      - ca.manager.example.com
+
+    adminPrivateKey:
+      path: ../artifacts/channel/crypto-config/peerOrganizations/manager.example.com/users/Admin@manager.example.com/msp/keystore/priv_sk
+    signedCert:
+      path: ../artifacts/channel/crypto-config/peerOrganizations/manager.example.com/users/Admin@manager.example.com/msp/signcerts/Admin@manager.example.com-cert.pem
+
+
+  EntrySystem:
+    mspid: EntrysystemMSP
+
+    peers:
+      - peer0.entrysystem.example.com
+
+    certificateAuthorities:
+      - ca.entrysystem.example.com
+
+    adminPrivateKey:
+      path: ../artifacts/channel/crypto-config/peerOrganizations/entrysystem.example.com/users/Admin@entrysystem.example.com/msp/keystore/priv_sk
+    signedCert:
+      path: ../artifacts/channel/crypto-config/peerOrganizations/entrysystem.example.com/users/Admin@entrysystem.example.com/msp/signcerts/Admin@entrysystem.example.com-cert.pem
+
+orderers:
+  orderer.example.com:
+    url: grpcs://localhost:7050
+    grpcOptions:
+      ssl-target-name-override: orderer.example.com
+    tlsCACerts:
+      path: ../artifacts/channel/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/ca.crt
+
+  orderer2.example.com:
+    url: grpcs://localhost:8050
+    grpcOptions:
+      ssl-target-name-override: orderer2.example.com
+    tlsCACerts:
+      path: ../artifacts/channel/crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/tls/ca.crt
+
+  orderer3.example.com:
+    url: grpcs://localhost:9050
+    grpcOptions:
+      ssl-target-name-override: orderer3.example.com
+    tlsCACerts:
+      path: ../artifacts/channel/crypto-config/ordererOrganizations/example.com/orderers/orderer3.example.com/tls/ca.crt
+
+#
+# List of peers to send various requests to, including endorsement, query
+# and event listener registration.
+#
+peers:
+  peer0.residents.example.com:
+    url: grpcs://localhost:7051
+
+    grpcOptions:
+      ssl-target-name-override: peer0.residents.example.com
+    tlsCACerts:
+      path: ../artifacts/channel/crypto-config/peerOrganizations/residents.example.com/peers/peer0.residents.example.com/tls/ca.crt
+
+  peer1.residents.example.com:
+    url: grpcs://localhost:8051
+
+    grpcOptions:
+      ssl-target-name-override: peer1.residents.example.com
+    tlsCACerts:
+      path: ../artifacts/channel/crypto-config/peerOrganizations/residents.example.com/peers/peer1.residents.example.com/tls/ca.crt
+
+  peer0.manager.example.com:
+    url: grpcs://localhost:8151
+
+    grpcOptions:
+      ssl-target-name-override: peer0.manager.example.com
+    tlsCACerts:
+      path: ../artifacts/channel/crypto-config/peerOrganizations/manager.example.com/peers/peer0.manager.example.com/tls/ca.crt
+
+  peer0.entrysystem.example.com:
+    url: grpcs://localhost:9051
+
+    grpcOptions:
+      ssl-target-name-override: peer0.entrysystem.example.com
+    tlsCACerts:
+      path: ../artifacts/channel/crypto-config/peerOrganizations/entrysystem.example.com/peers/peer0.entrysystem.example.com/tls/ca.crt
+#
+# Fabric-CA is a special kind of Certificate Authority provided by Hyperledger Fabric which allows
+# certificate management to be done via REST APIs. Application may choose to use a standard
+# Certificate Authority instead of Fabric-CA, in which case this section would not be specified.
+#
+certificateAuthorities:
+  ca.residents.example.com:
+    url: https://localhost:7054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: ../artifacts/channel/crypto-config/peerOrganizations/residents.example.com/ca/ca.residents.example.com-cert.pem
+
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    caName: ca.residents.example.com
+
+  ca.manager.example.com:
+    url: https://localhost:8054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: ../artifacts/channel/crypto-config/peerOrganizations/manager.example.com/ca/ca.manager.example.com-cert.pem
+
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    caName: ca.manager.example.com
+
+  ca.entrysystem.example.com:
+    url: https://localhost:9054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: ../artifacts/channel/crypto-config/peerOrganizations/entrysystem.example.com/ca/ca.entrysystem.example.com-cert.pem
+
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    caName: ca.entrysystem.example.com

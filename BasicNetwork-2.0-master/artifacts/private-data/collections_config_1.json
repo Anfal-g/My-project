@@ -1,0 +1,14 @@
+[
+  {
+    "name": "AccessLogCollection",
+    "policy": "OR('ResidentsMSP.member', 'ManagerMSP.member', 'EntrySystemMSP.member')",
+    "requiredPeerCount": 1,
+    "maxPeerCount": 3,
+    "blockToLive": 0,
+    "memberOnlyRead": true,
+    "memberOnlyWrite": true,
+    "endorsementPolicy": {
+      "signaturePolicy": "OR('ManagerMSP.member', 'EntrySystemMSP.member')"
+    }
+  }
+]
