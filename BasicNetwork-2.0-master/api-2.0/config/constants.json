@@ -4,7 +4,7 @@
     "jwt_expiretime": "10d",
     "channelName": "residentschannel",
     "CC_SRC_PATH": "../../artifacts/channel",
-    "eventWaitTime": "30000",
+    "eventWaitTime": "60000",
     "admins": [
         {
             "username": "admin",

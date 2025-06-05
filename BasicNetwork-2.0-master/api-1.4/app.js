@@ -90,7 +90,7 @@ app.use(function (req, res, next) {
 var server = http.createServer(app).listen(port, function () { });
 logger.info('****************** SERVER STARTED ************************');
 logger.info('***************  http://%s:%s  ******************', host, port);
-server.timeout = 240000;
+server.timeout = 540000;
 
 function getErrorMessage(field) {
 	var response = {

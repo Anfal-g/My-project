@@ -30,6 +30,7 @@ const invokeTransaction = async (channelName, chaincodeName, fcn, args, username
             discovery: { 
          enabled: true,
         asLocalhost: true,
+        timeout: 60000, // Discovery timeout
         // Add these critical parameters
         initialRefreshInterval: 40000, // ms
         maxTargets: 2,
@@ -40,10 +41,13 @@ const invokeTransaction = async (channelName, chaincodeName, fcn, args, username
             backoffFactor: 2.0
              }
             },
+  connection: {
+    timeout: 45000 // Overall connection timeout
+       },
              eventHandlerOptions: {
         strategy: DefaultEventHandlerStrategies.NETWORK_SCOPE_ALLFORTX,
-        commitTimeout: 300, // seconds
-        endorseTimeout: 30
+        commitTimeout: 600, // seconds
+        endorseTimeout: 60
     }
         });
 
