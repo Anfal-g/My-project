@@ -1,3 +1,6 @@
 [submodule "access-control-main"]
 	path = access-control-main
 	url = https://github.com/Anfal-g/Access-Control-.git
+[submodule "subrepo-folder"]
+	path = subrepo-folder
+	url = https://github.com/Anfal-g/access-control-main.git
