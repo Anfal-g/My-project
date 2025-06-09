@@ -1,0 +1,79 @@
+{
+	"name": "first network (ignored)",
+	"version": "1.0.0",
+	"license": "Apache-2.0",
+	"client": {
+		"tlsEnable": true,
+		"caCredential": {
+			"id": "admin",
+			"password": "adminpw"
+		},
+		"adminCredential": {
+			"id": "exploreradmin",
+			"password": "exploreradminpw",
+			"affiliation": "org1.department1"
+		},
+		"enableAuthentication": true,
+		"organization": "residentsMSP",
+		"connection": {
+			"timeout": {
+				"peer": {
+					"endorser": "300"
+				},
+				"orderer": "300"
+			}
+		}
+	},
+	"channels": {
+		"residentschannel": {
+			"peers": {
+				"peer0.residents.example.com": {}
+			},
+			"connection": {
+				"timeout": {
+					"peer": {
+						"endorser": "6000",
+						"eventHub": "6000",
+						"eventReg": "6000"
+					}
+				}
+			}
+		}
+	},
+	"organizations": {
+		"residentsMSP": {
+			"mspid": "ResidentsMSP",
+			"adminPrivateKey": {
+				"path": "/etc/data/peerOrganizations/residents.example.com/users/Admin@residents.example.com/msp/keystore/priv_sk"
+			},
+			"peers": [
+				"peer0.residents.example.com"
+			],
+			"signedCert": {
+				"path": "/etc/data/peerOrganizations/residents.example.com/users/Admin@residents.example.com/msp/signcerts/Admin@residents.example.com-cert.pem"
+			}
+		}
+	},
+	"peers": {
+		"peer0.residents.example.com": {
+			"tlsCACerts": {
+				"path": "/etc/data/peerOrganizations/residents.example.com/peers/peer0.residents.example.com/tls/ca.crt"
+			},
+			"url": "grpcs://peer0.residents.example.com:7051",
+            "eventUrl": "grpcs://peer0.residents.example.com:7053",
+			"grpcOptions": {
+				"ssl-target-name-override": "peer0.residents.example.com"
+			}
+		},
+		"peer1.residents.example.com": {
+            "url": "grpcs://peer1.residents.example.com:8051",
+            "eventUrl": "grpcs://peer1.residents.example.com:8053",
+            "tlsCACerts": {
+              "path": "/etc/data/peerOrganizations/residents.example.com/peers/peer1.residents.example.com/tls/ca.crt"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer1.residents.example.com"
+            }
+        }
+	}
+}
