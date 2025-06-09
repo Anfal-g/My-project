@@ -1,0 +1,42 @@
+version: "2"
+
+networks:
+  test:
+    name: test  # Ensures the network is named exactly as "test"
+
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    hostname: prometheus
+    restart: always
+    tty: true
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    ports:
+      - 9090:9090
+    networks:
+      - test
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    hostname: grafana
+    environment:
+      - GF_AUTH_PROXY_ENABLED=true
+      - GF_SECURITY_ADMIN_USER=admingrafana
+      - GF_SECURITY_ADMIN_PASSWORD=admingrafanapw
+      - GF_PATHS_PROVISIONING=/var/lib/grafana/provisioning/
+    volumes:
+      - ./provisioning/:/var/lib/grafana/provisioning/
+      - grafana_data:/var/lib/grafana
+    ports:
+      - 3000:3000
+    networks:
+      - test
+    depends_on:
+      - prometheus
+volumes:
+  prometheus_data:
+  grafana_data:
